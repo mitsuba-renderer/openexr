@@ -16,5 +16,6 @@
 
 // Required for system-specific debug trap code in IexBaseExc.cpp
 
+#ifndef PLATFORM_WINDOWS
 #define PLATFORM_WINDOWS 1
-
+#endif
