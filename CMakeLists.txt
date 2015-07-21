@@ -9,8 +9,10 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     "MinSizeRel" "RelWithDebInfo")
 endif()
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-switch -Wno-tautological-compare")
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4275 /wd4267 /wd4244 /wd4477 /wd4996 /wd4800 /wd4334 /wd4251 /wd4305 /wd4302 /wd4311 /wd4018")
 endif()
 
 add_subdirectory(IlmBase IlmBase)
@@ -22,12 +24,22 @@ include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}/IlmBase/config
 )
 
-link_directories(
-  ${CMAKE_CURRENT_BINARY_DIR}/IlmBase/Iex
-  ${CMAKE_CURRENT_BINARY_DIR}/IlmBase/Imath
-  ${CMAKE_CURRENT_BINARY_DIR}/IlmBase/IlmThread
-  ${CMAKE_CURRENT_BINARY_DIR}/IlmBase/Half
+add_custom_target(CopyIlmBaseLibs
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${CMAKE_CURRENT_BINARY_DIR}/IlmBase/Half/$<CONFIGURATION>
+  ${CMAKE_CURRENT_BINARY_DIR}/OpenEXR/IlmImf/$<CONFIGURATION>
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${CMAKE_CURRENT_BINARY_DIR}/IlmBase/IlmThread/$<CONFIGURATION>
+  ${CMAKE_CURRENT_BINARY_DIR}/OpenEXR/IlmImf/$<CONFIGURATION>
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${CMAKE_CURRENT_BINARY_DIR}/IlmBase/Iex/$<CONFIGURATION>
+  ${CMAKE_CURRENT_BINARY_DIR}/OpenEXR/IlmImf/$<CONFIGURATION>
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${CMAKE_CURRENT_BINARY_DIR}/IlmBase/Imath/$<CONFIGURATION>
+  ${CMAKE_CURRENT_BINARY_DIR}/OpenEXR/IlmImf/$<CONFIGURATION>
 )
+add_dependencies(CopyIlmBaseLibs Iex Imath IlmThread Half)
 
 add_subdirectory(OpenEXR OpenEXR)
-add_dependencies(IlmImf Iex Imath IlmThread Half)
+add_dependencies(b44ExpLogTable CopyIlmBaseLibs)
+add_dependencies(dwaLookups CopyIlmBaseLibs)
