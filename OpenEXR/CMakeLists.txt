@@ -9,10 +9,16 @@ SET(OPENEXR_VERSION_PATCH "0")
 SET(OPENEXR_VERSION ${OPENEXR_VERSION_MAJOR}.${OPENEXR_VERSION_MINOR}.${OPENEXR_VERSION_PATCH})
 SET(OPENEXR_VERSION_API ${OPENEXR_VERSION_MAJOR}_${OPENEXR_VERSION_MINOR})
 
+option(OPENEXR_BUILD_TESTS      "Build OpenEXR tests?" OFF)
+option(OPENEXR_BUILD_UTILS      "Build OpenEXR utilities?" OFF)
+option(OPENEXR_BUILD_EXAMPLES   "Build OpenEXR examples?" OFF)
+option(OPENEXR_INSTALL_EXAMPLES "Install OpenEXR examples?" OFF)
+option(OPENEXR_INSTALL_DOCS     "Install OpenEXR examples?" OFF)
 
 # enable the tests
-#ENABLE_TESTING()
-
+if (OPENEXR_BUILD_TESTS)
+ENABLE_TESTING()
+endif()
 
 # distro building 
 SET(CPACK_PACKAGE_VERSION_MAJOR "${OPENEXR_VERSION_MAJOR}")
@@ -29,9 +35,9 @@ INCLUDE ( CPack )
 
 
 # Allow the developer to select if Dynamic or Static libraries are built
-OPTION (BUILD_SHARED_LIBS    "Build Shared Libraries" ON)
-OPTION (USE_ZLIB_WINAPI      "Use ZLib Win API"       OFF)
-OPTION (NAMESPACE_VERSIONING "Use Namespace Versioning" ON)
+OPTION (OPENEXR_BUILD_SHARED_LIBS    "Build Shared Libraries" ON)
+OPTION (OPENEXR_USE_ZLIB_WINAPI      "Use ZLib Win API"       OFF)
+OPTION (OPENEXR_NAMESPACE_VERSIONING "Use Namespace Versioning" ON)
 
 # Setup osx rpathing
 SET (CMAKE_MACOSX_RPATH 1)
@@ -57,12 +63,14 @@ IF (NOT WIN32)
   SET ( PTHREAD_LIB pthread )
 ENDIF()
 
+if (DEFINED ILMBASE_PACKAGE_PREFIX)
 INCLUDE_DIRECTORIES ( ${ILMBASE_PACKAGE_PREFIX}/include/OpenEXR )
 LINK_DIRECTORIES ( ${ILMBASE_PACKAGE_PREFIX}/lib )
 MESSAGE ( "ILMBASE_PACKAGE_PREFIX = " ${ILMBASE_PACKAGE_PREFIX})
+endif()
 
 SET (LIB_TYPE STATIC)
-IF (BUILD_SHARED_LIBS)
+IF (OPENEXR_BUILD_SHARED_LIBS)
   # User wants to build Dynamic Libraries, so change the LIB_TYPE variable to CMake keyword 'SHARED'
   SET (LIB_TYPE SHARED)
     IF (WIN32)
@@ -70,7 +78,7 @@ IF (BUILD_SHARED_LIBS)
   ENDIF ()
 ENDIF ()
 
-IF (USE_ZLIB_WINAPI)
+IF (OPENEXR_USE_ZLIB_WINAPI)
   ADD_DEFINITIONS(-DZLIB_WINAPI)
 ENDIF ()
 
@@ -121,7 +129,7 @@ ELSE ()
   FILE ( APPEND ${CMAKE_CURRENT_BINARY_DIR}/config/OpenEXRConfig.h "#define OPENEXR_IMF_HAVE_LARGE_STACK 1\n" )
 ENDIF()
   
-IF (NAMESPACE_VERSIONING)
+IF (OPENEXR_NAMESPACE_VERSIONING)
     FILE ( APPEND ${CMAKE_CURRENT_BINARY_DIR}/config/OpenEXRConfig.h "#define OPENEXR_IMF_INTERNAL_NAMESPACE_CUSTOM 1\n")
     FILE ( APPEND ${CMAKE_CURRENT_BINARY_DIR}/config/OpenEXRConfig.h "#define OPENEXR_IMF_NAMESPACE Imf\n" )
     FILE ( APPEND ${CMAKE_CURRENT_BINARY_DIR}/config/OpenEXRConfig.h "#define OPENEXR_IMF_INTERNAL_NAMESPACE Imf_${OPENEXR_VERSION_API}\n\n" )
@@ -159,7 +167,7 @@ ENDIF()
   
 SET (OPENEXR_LIBSUFFIX "")
 SET (ILMBASE_LIBSUFFIX "")
-IF (NAMESPACE_VERSIONING)
+IF (OPENEXR_NAMESPACE_VERSIONING)
   SET ( OPENEXR_LIBSUFFIX "-${OPENEXR_VERSION_API}" )
   # assume same NAMESPACE_VERSION setting for IlmBase for now
   SET ( ILMBASE_LIBSUFFIX "-${OPENEXR_VERSION_API}" )
@@ -180,39 +188,47 @@ SET_TARGET_PROPERTIES ( IlmImf
 ##########################
 # IlmImfUtil library
 ##########################
-#ADD_SUBDIRECTORY ( IlmImfUtil )
+if (OPENEXR_BUILD_UTILS)
+ADD_SUBDIRECTORY ( IlmImfUtil )
 
-#SET_TARGET_PROPERTIES ( IlmImfUtil
-  #PROPERTIES
-  #VERSION 22.0.0
-  #SOVERSION 22
-  #OUTPUT_NAME "IlmImfUtil${OPENEXR_LIBSUFFIX}"
-  #)
+SET_TARGET_PROPERTIES ( IlmImfUtil
+  PROPERTIES
+  VERSION 22.0.0
+  SOVERSION 22
+  OUTPUT_NAME "IlmImfUtil${OPENEXR_LIBSUFFIX}"
+  )
+endif()
   
 ##########################
 # Example Code
 ##########################
-#ADD_SUBDIRECTORY ( IlmImfExamples )
+if (OPENEXR_BUILD_EXAMPLES)
+ADD_SUBDIRECTORY ( IlmImfExamples )
+endif()
 
   
 ##########################
 # Tests
 ##########################
-#ADD_SUBDIRECTORY ( IlmImfTest )
-#ADD_SUBDIRECTORY ( IlmImfUtilTest )
-#ADD_SUBDIRECTORY ( IlmImfFuzzTest )
+if (OPENEXR_BUILD_TESTS)
+ADD_SUBDIRECTORY ( IlmImfTest )
+ADD_SUBDIRECTORY ( IlmImfUtilTest )
+ADD_SUBDIRECTORY ( IlmImfFuzzTest )
+endif()
 
 
 ##########################
 # Binaries / Utilities
 ##########################
-#ADD_SUBDIRECTORY ( exrheader )
-#ADD_SUBDIRECTORY ( exrmaketiled )
-#ADD_SUBDIRECTORY ( exrstdattr )
-#ADD_SUBDIRECTORY ( exrmakepreview )
-#ADD_SUBDIRECTORY ( exrenvmap )
-#ADD_SUBDIRECTORY ( exrmultiview )
-#ADD_SUBDIRECTORY ( exrmultipart )
+if (OPENEXR_BUILD_UTILS)
+ADD_SUBDIRECTORY ( exrheader )
+ADD_SUBDIRECTORY ( exrmaketiled )
+ADD_SUBDIRECTORY ( exrstdattr )
+ADD_SUBDIRECTORY ( exrmakepreview )
+ADD_SUBDIRECTORY ( exrenvmap )
+ADD_SUBDIRECTORY ( exrmultiview )
+ADD_SUBDIRECTORY ( exrmultipart )
+endif()
 
 
 ##########################
@@ -226,35 +242,39 @@ INSTALL ( FILES
   )
 
 # Documentation
-#INSTALL ( FILES
-  #doc/TechnicalIntroduction.pdf
-  #doc/ReadingAndWritingImageFiles.pdf
-  #doc/OpenEXRFileLayout.pdf
-  #doc/MultiViewOpenEXR.pdf
-  #doc/InterpretingDeepPixels.pdf
-  #doc/TheoryDeepPixels.pdf
-  #DESTINATION
-  #${CMAKE_INSTALL_PREFIX}/share/doc/OpenEXR-${OPENEXR_VERSION}
-  #)
+if (OPENEXR_INSTALL_DOCS)
+INSTALL ( FILES
+  doc/TechnicalIntroduction.pdf
+  doc/ReadingAndWritingImageFiles.pdf
+  doc/OpenEXRFileLayout.pdf
+  doc/MultiViewOpenEXR.pdf
+  doc/InterpretingDeepPixels.pdf
+  doc/TheoryDeepPixels.pdf
+  DESTINATION
+  ${CMAKE_INSTALL_PREFIX}/share/doc/OpenEXR-${OPENEXR_VERSION}
+  )
+endif()
 
 # Examples
-#INSTALL ( FILES
-  #IlmImfExamples/main.cpp
-  #IlmImfExamples/drawImage.cpp
-  #IlmImfExamples/rgbaInterfaceExamples.cpp
-  #IlmImfExamples/rgbaInterfaceTiledExamples.cpp
-  #IlmImfExamples/generalInterfaceExamples.cpp
-  #IlmImfExamples/lowLevelIoExamples.cpp
-  #IlmImfExamples/previewImageExamples.cpp
-  #IlmImfExamples/generalInterfaceTiledExamples.cpp
-  #IlmImfExamples/generalInterfaceTiledExamples.h
-  #IlmImfExamples/drawImage.h
-  #IlmImfExamples/rgbaInterfaceExamples.h
-  #IlmImfExamples/generalInterfaceExamples.h
-  #IlmImfExamples/rgbaInterfaceTiledExamples.h
-  #IlmImfExamples/lowLevelIoExamples.h
-  #IlmImfExamples/previewImageExamples.h
-  #IlmImfExamples/namespaceAlias.h
-  #DESTINATION
-  #${CMAKE_INSTALL_PREFIX}/share/doc/OpenEXR-${OPENEXR_VERSION}/examples
-  #)
+if (OPENEXR_INSTALL_EXAMPLES)
+INSTALL ( FILES
+  IlmImfExamples/main.cpp
+  IlmImfExamples/drawImage.cpp
+  IlmImfExamples/rgbaInterfaceExamples.cpp
+  IlmImfExamples/rgbaInterfaceTiledExamples.cpp
+  IlmImfExamples/generalInterfaceExamples.cpp
+  IlmImfExamples/lowLevelIoExamples.cpp
+  IlmImfExamples/previewImageExamples.cpp
+  IlmImfExamples/generalInterfaceTiledExamples.cpp
+  IlmImfExamples/generalInterfaceTiledExamples.h
+  IlmImfExamples/drawImage.h
+  IlmImfExamples/rgbaInterfaceExamples.h
+  IlmImfExamples/generalInterfaceExamples.h
+  IlmImfExamples/rgbaInterfaceTiledExamples.h
+  IlmImfExamples/lowLevelIoExamples.h
+  IlmImfExamples/previewImageExamples.h
+  IlmImfExamples/namespaceAlias.h
+  DESTINATION
+  ${CMAKE_INSTALL_PREFIX}/share/doc/OpenEXR-${OPENEXR_VERSION}/examples
+  )
+endif()
