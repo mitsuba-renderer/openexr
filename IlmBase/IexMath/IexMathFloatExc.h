@@ -41,7 +41,7 @@
 #define IEXMATH_EXPORT_H
 
 #if defined(OPENEXR_DLL)
-    #if defined(IEX_EXPORTS)
+    #if defined(IEXMATH_EXPORTS)
     #define IEXMATH_EXPORT __declspec(dllexport)
     #else
     #define IEXMATH_EXPORT __declspec(dllimport)
