@@ -21,3 +21,13 @@ missing
 .DS_Store
 *.project
 *.cproject
+CMakeFiles
+*.cmake
+Makefile
+*.a
+/IlmBase/Half/eLut
+/IlmBase/Half/eLut.h
+/IlmBase/Half/toFloat
+/IlmBase/Half/toFloat.h
+/OpenEXR/IlmImf/b44ExpLogTable.h
+/OpenEXR/IlmImf/dwaLookups.h
