@@ -31,7 +31,7 @@ INCLUDE ( CPack )
 
 
 # Allow the developer to select if Dynamic or Static libraries are built
-OPTION (BUILD_SHARED_LIBS "Build Shared Libraries" ON)
+OPTION (ILMBASE_BUILD_SHARED_LIBS "Build Shared Libraries" ON)
 
 # Allow the developer to select if Dynamic or Static libraries are built
 OPTION (ILMBASE_NAMESPACE_VERSIONING "Namespace Versioning" ON)
@@ -104,13 +104,13 @@ MACRO(GET_TARGET_PROPERTY_WITH_DEFAULT _variable _target _property _default_valu
  ENDMACRO(CREATE_LIBTOOL_FILE)
 
 SET (LIB_TYPE STATIC)
-IF (BUILD_SHARED_LIBS)
+IF (ILMBASE_BUILD_SHARED_LIBS)
   # User wants to build Dynamic Libraries, so change the LIB_TYPE variable to CMake keyword 'SHARED'
   SET (LIB_TYPE SHARED)
   IF (WIN32)
     ADD_DEFINITIONS(-DOPENEXR_DLL)
   ENDIF ()
-ENDIF (BUILD_SHARED_LIBS)
+ENDIF (ILMBASE_BUILD_SHARED_LIBS)
 
 
 ADD_SUBDIRECTORY ( Half )
