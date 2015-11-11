@@ -31,3 +31,10 @@ Makefile
 /IlmBase/Half/toFloat.h
 /OpenEXR/IlmImf/b44ExpLogTable.h
 /OpenEXR/IlmImf/dwaLookups.h
+*.filters
+*.vcxproj
+*.dir
+*.sln
+Release
+Debug
+x64
