@@ -63,8 +63,6 @@ SET ( ILMIMF_SRCS
   ImfRleCompressor.cpp
   ImfZipCompressor.cpp
   ImfPizCompressor.cpp
-  ImfB44Compressor.cpp
-  ImfDwaCompressor.cpp
   ImfMisc.cpp
   ImfCompressionAttribute.cpp
   ImfDoubleAttribute.cpp
@@ -132,12 +130,23 @@ IF (OPENEXR_BUILD_SHARED_LIBS)
     ADD_DEFINITIONS(-DILMIMF_EXPORTS)
 ENDIF()
 
-ADD_LIBRARY ( IlmImf ${LIB_TYPE}
+ADD_LIBRARY ( IlmImf-obj OBJECT
   ${ILMIMF_SRCS}
 )
 
-TARGET_LINK_LIBRARIES ( IlmImf 
-  Half 
+ADD_LIBRARY ( IlmImf ${LIB_TYPE}
+  ImfB44Compressor.cpp
+  ImfDwaCompressor.cpp
+  $<TARGET_OBJECTS:IlmImf-obj>
+)
+
+if (${LIB_TYPE} MATCHES "SHARED")
+  set_property(TARGET IlmImf PROPERTY POSITION_INDEPENDENT_CODE ON)
+  set_property(TARGET IlmImf-obj PROPERTY POSITION_INDEPENDENT_CODE ON)
+endif()
+
+TARGET_LINK_LIBRARIES ( IlmImf
+  Half
   Iex${ILMBASE_LIBSUFFIX}
   Imath${ILMBASE_LIBSUFFIX}
   IlmThread${ILMBASE_LIBSUFFIX}
@@ -261,4 +270,3 @@ INSTALL ( FILES
   DESTINATION
   ${CMAKE_INSTALL_PREFIX}/include/OpenEXR
 )
-
