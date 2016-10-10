@@ -270,6 +270,3 @@ INSTALL ( FILES
   DESTINATION
   ${CMAKE_INSTALL_PREFIX}/include/OpenEXR
 )
-
-set_source_files_properties(ImfMisc.cpp PROPERTIES COMPILE_FLAGS -O1)
-
