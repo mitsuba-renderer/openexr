@@ -77,6 +77,10 @@
 //
 #include "IlmBaseConfig.h"
 
+#if defined(_MSC_VER)
+#  pragma warning(push)
+#  pragma warning(disable: 4515) //  warning C4515: 'Imf': namespace uses itself
+#endif
 
 #ifndef IMATH_NAMESPACE
 #define IMATH_NAMESPACE Imath
@@ -111,5 +115,8 @@ namespace IMATH_NAMESPACE {
 #define IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER namespace IMATH_INTERNAL_NAMESPACE {
 #define IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT }
 
+#if defined(_MSC_VER)
+#  pragma warning(pop)
+#endif
 
 #endif /* INCLUDED_IMATHNAMESPACE_H */

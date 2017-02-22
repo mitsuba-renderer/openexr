@@ -77,6 +77,10 @@
 //
 #include "OpenEXRConfig.h"
 
+#if defined(_MSC_VER)
+  #pragma warning(push)
+  #pragma warning(disable: 4515) //  warning C4515: 'Imf': namespace uses itself
+#endif
 
 #ifndef OPENEXR_IMF_NAMESPACE
 #define OPENEXR_IMF_NAMESPACE Imf
@@ -111,5 +115,8 @@ namespace OPENEXR_IMF_NAMESPACE {
 #define OPENEXR_IMF_INTERNAL_NAMESPACE_SOURCE_ENTER namespace OPENEXR_IMF_INTERNAL_NAMESPACE {
 #define OPENEXR_IMF_INTERNAL_NAMESPACE_SOURCE_EXIT }
 
+#if defined(_MSC_VER)
+#  pragma warning(pop)
+#endif
 
 #endif /* INCLUDED_IMFNAMESPACE_H */

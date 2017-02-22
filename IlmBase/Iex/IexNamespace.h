@@ -77,6 +77,11 @@
 //
 #include "IlmBaseConfig.h"
 
+#if defined(_MSC_VER)
+#  pragma warning(push)
+#  pragma warning(disable: 4515) //  warning C4515: 'Imf': namespace uses itself
+#endif
+
 #ifndef IEX_NAMESPACE
 #define IEX_NAMESPACE Iex
 #endif
@@ -108,5 +113,9 @@ namespace IEX_NAMESPACE {
 
 #define IEX_INTERNAL_NAMESPACE_SOURCE_ENTER namespace IEX_INTERNAL_NAMESPACE {
 #define IEX_INTERNAL_NAMESPACE_SOURCE_EXIT }
+
+#if defined(_MSC_VER)
+#  pragma warning(pop)
+#endif
 
 #endif // INCLUDED_IEXNAMESPACE_H
