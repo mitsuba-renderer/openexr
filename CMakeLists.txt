@@ -20,6 +20,16 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4275 /wd4267 /wd4244 /wd4477 /wd4996 /wd4800 /wd4334 /wd4251 /wd4305 /wd4302 /wd4311 /wd4018")
 endif()
 
+if (WIN32 AND NOT TARGET zlib)
+  # Build zlib (only on Windows)
+  set(ZLIB_BUILD_STATIC_LIBS OFF CACHE BOOL " " FORCE)
+  set(ZLIB_BUILD_SHARED_LIBS ON CACHE BOOL " " FORCE)
+  add_subdirectory(zlib)
+
+  set(ZLIB_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/zlib;${CMAKE_CURRENT_BINARY_DIR}/zlib" CACHE PATH " " FORCE)
+  set(ZLIB_LIBRARY "${CMAKE_CURRENT_BINARY_DIR}/zlib/$<CONFIGURATION>/zlib.lib" CACHE FILEPATH " " FORCE)
+endif()
+
 add_subdirectory(IlmBase)
 include_directories(
   IlmBase/Iex
