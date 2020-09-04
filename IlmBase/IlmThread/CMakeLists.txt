@@ -25,13 +25,13 @@ ENDIF()
 
 ADD_LIBRARY ( IlmThread ${LIB_TYPE}
   ${ILMTHREAD_LIBRARY_SOURCES}
-  )
+)
 TARGET_LINK_LIBRARIES(IlmThread Iex)
 
 INSTALL ( TARGETS
   IlmThread
   DESTINATION
-  lib
+  ${OPENEXR_INSTALL_LIB_DEST}
 )
 
 INSTALL ( FILES 
@@ -43,5 +43,5 @@ INSTALL ( FILES
   IlmThreadExport.h
   IlmThreadForward.h
   DESTINATION
-  include/OpenEXR
+  ${OPENEXR_INSTALL_HEADER_DEST}
 )

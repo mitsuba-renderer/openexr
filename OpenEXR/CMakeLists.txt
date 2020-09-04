@@ -236,7 +236,7 @@ endif()
 INSTALL ( FILES
   ${CMAKE_CURRENT_BINARY_DIR}/config/OpenEXRConfig.h
   DESTINATION
-  ${CMAKE_INSTALL_PREFIX}/include/OpenEXR
+  ${OPENEXR_INSTALL_HEADER_DEST}
   )
 
 # Documentation

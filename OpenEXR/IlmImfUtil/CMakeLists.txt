@@ -41,7 +41,7 @@ TARGET_LINK_LIBRARIES ( IlmImfUtil
 INSTALL ( TARGETS
   IlmImfUtil
   DESTINATION
-  ${CMAKE_INSTALL_PREFIX}/lib
+  ${OPENEXR_INSTALL_LIB_DEST}
 )
 
 # Headers
@@ -62,6 +62,6 @@ INSTALL ( FILES
   ImfImageDataWindow.h
   ImfImageChannelRenaming.h
   DESTINATION
-  ${CMAKE_INSTALL_PREFIX}/include/OpenEXR
+  ${OPENEXR_INSTALL_HEADER_DEST}
   )
 

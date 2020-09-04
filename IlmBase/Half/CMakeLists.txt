@@ -45,7 +45,7 @@ ADD_DEPENDENCIES ( Half toFloat eLut )
 INSTALL ( TARGETS
   Half
   DESTINATION
-  lib
+  ${OPENEXR_INSTALL_LIB_DEST}
 )
 
 INSTALL ( FILES 
@@ -54,5 +54,5 @@ INSTALL ( FILES
   halfExport.h
   halfLimits.h
   DESTINATION
-  include/OpenEXR
+  ${OPENEXR_INSTALL_HEADER_DEST}
 )
