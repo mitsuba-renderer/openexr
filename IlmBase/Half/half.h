@@ -98,6 +98,7 @@ class half
 
     half ();			// no initialization
     half (float f);
+    half(const half & h): _h(h._h) { }
 
 
     //--------------------
