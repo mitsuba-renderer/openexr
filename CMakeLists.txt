@@ -28,6 +28,7 @@ if (WIN32 AND NOT TARGET zlib)
 
   set(ZLIB_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/zlib;${CMAKE_CURRENT_BINARY_DIR}/zlib" CACHE PATH " " FORCE)
   set(ZLIB_LIBRARIES zlib CACHE FILEPATH " " FORCE)
+else()
 endif()
 
 add_subdirectory(IlmBase)
