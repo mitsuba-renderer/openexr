@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2004, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -136,7 +136,7 @@ class Attribute
 //-------------------------------------------------
 // Class template for attributes of a specific type
 //-------------------------------------------------
-    
+
 template <class T>
 class TypedAttribute: public Attribute
 {
@@ -156,7 +156,7 @@ class TypedAttribute: public Attribute
 
     TypedAttribute& operator = (const TypedAttribute<T>& other) = default;
     TypedAttribute& operator = (TypedAttribute<T>&& other) = default;
-    
+
     //--------------------------------
     // Access to the attribute's value
     //--------------------------------
@@ -170,7 +170,7 @@ class TypedAttribute: public Attribute
     //--------------------------------
 
     virtual const char *		typeName () const;
-    
+
 
     //---------------------------------------------------------
     // Static version of typeName()
@@ -178,7 +178,7 @@ class TypedAttribute: public Attribute
     //---------------------------------------------------------
 
     static const char *			staticTypeName ();
-    
+
 
     //---------------------
     // Make a new attribute
@@ -275,7 +275,7 @@ TypedAttribute<T>::value () const
 
 
 template <class T>
-const char *	
+const char *
 TypedAttribute<T>::typeName () const
 {
     return staticTypeName();
@@ -301,26 +301,26 @@ TypedAttribute<T>::copy () const
 
 
 template <class T>
-void		
+void
 TypedAttribute<T>::writeValueTo (OPENEXR_IMF_INTERNAL_NAMESPACE::OStream &os,
-                                    int version) const
+                                    int /*version*/) const
 {
     OPENEXR_IMF_INTERNAL_NAMESPACE::Xdr::write <OPENEXR_IMF_INTERNAL_NAMESPACE::StreamIO> (os, _value);
 }
 
 
 template <class T>
-void		
+void
 TypedAttribute<T>::readValueFrom (OPENEXR_IMF_INTERNAL_NAMESPACE::IStream &is,
-                                     int size,
-                                     int version)
+                                     int /*size*/,
+                                     int /*version*/)
 {
     OPENEXR_IMF_INTERNAL_NAMESPACE::Xdr::read <OPENEXR_IMF_INTERNAL_NAMESPACE::StreamIO> (is, _value);
 }
 
 
 template <class T>
-void		
+void
 TypedAttribute<T>::copyValueFrom (const Attribute &other)
 {
     _value = cast(other)._value;

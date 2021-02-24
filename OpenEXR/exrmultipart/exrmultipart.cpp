@@ -284,23 +284,23 @@ convert(vector <const char*> in,
 {
     if(in.size()!=1)
     {
-        cerr <<"\n" << "ERROR: " 
+        cerr <<"\n" << "ERROR: "
         "can only convert one file at once - use 'combine' mode for multiple files" << endl;
         exit(1);
     }
     try
     {
         MultiPartInputFile infile(in[0]);
-        
+
         if(infile.parts() != 1)
         {
-            cerr <<"\n" << "ERROR: " 
+            cerr <<"\n" << "ERROR: "
             "can only convert single part EXRs to multipart EXR-2.0 files: use 'split' mode instead" << endl;
             exit(1);
         }
-        
+
         vector<MultiViewChannelName> input_channels;
-        
+
         string hero;
         if(hasMultiView(infile.header(0)))
         {
@@ -310,21 +310,21 @@ convert(vector <const char*> in,
                 hero=h[0];
             }
         }
-        
+
         // retrieve channel names from input file in view-friendly format
         GetChannelsInMultiPartFile(infile,input_channels);
-        
-        
+
+
         vector< MultiViewChannelName > output_channels = input_channels;
         // remap channels to multiple output parts
         int parts = SplitChannels(output_channels.begin(),output_channels.end(),true,hero);
-        
+
         vector<Header> output_headers(parts);
         vector<FrameBuffer> output_framebuffers(parts);
         FrameBuffer input_framebuffer;
-        
+
         //
-        // make all output headers the same as the input header but 
+        // make all output headers the same as the input header but
         // with no channels
         //
         for(int i=0;i<parts;i++)
@@ -342,7 +342,7 @@ convert(vector <const char*> in,
                 h.setName (pname);
 
             h.channels()=ChannelList();
-        }   
+        }
 
         make_unique_names(output_headers);
 
@@ -353,18 +353,18 @@ convert(vector <const char*> in,
         {
             ++channel_count;
         }
-        
+
         Box2i dataWindow = infile.header(0).dataWindow();
         int pixel_count = (dataWindow.size().y+1)*(dataWindow.size().x+1);
         int pixel_width = dataWindow.size().x+1;
-        
-        
+
+
         // offset in pixels between base of array and 0,0
         int pixel_base = dataWindow.min.y*pixel_width+dataWindow.min.x;
 
         vector< vector<char> > channelstore(channel_count);
-        
-        
+
+
         //
         // insert channels into correct header and framebuffers
         //
@@ -375,12 +375,12 @@ convert(vector <const char*> in,
             ChannelList::ConstIterator chan = in_chanlist.find(input_channels[i].internal_name);
             Header & h = output_headers[part];
             h.channels().insert(output_channels[i].name,chan.channel());
-            
+
             if( output_channels[i].view!="" )
             {
                 h.setView( output_channels[i].view );
             }
-            
+
             // compute size of channel
             size_t samplesize=sizeof(float);
             if(chan.channel().type==HALF)
@@ -388,7 +388,7 @@ convert(vector <const char*> in,
                 samplesize=sizeof(half);
             }
             channelstore[i].resize(samplesize*pixel_count);
-            
+
             output_framebuffers[part].insert(output_channels[i].name,
                                              Slice(chan.channel().type,
                                                    &channelstore[i][0]-pixel_base*samplesize,
@@ -400,35 +400,35 @@ convert(vector <const char*> in,
                                            &channelstore[i][0] - pixel_base*samplesize,
                                            samplesize,
                                            pixel_width*samplesize));
-                                                    
+
         }
-        
+
         //
         // create output file
         //
         MultiPartOutputFile outfile(outname,&output_headers[0],
                                     output_headers.size());
         InputPart inpart(infile,0);
-        
-        
+
+
         //
         // read file
         //
         inpart.setFrameBuffer(input_framebuffer);
         inpart.readPixels(dataWindow.min.y,dataWindow.max.y);
-        
+
         //
         // write each part
         //
-        
+
         for(size_t i=0;i<output_framebuffers.size();i++)
         {
             OutputPart outpart(outfile,i);
             outpart.setFrameBuffer(output_framebuffers[i]);
             outpart.writePixels(dataWindow.max.y+1-dataWindow.min.y);
         }
-        
-        
+
+
     }
     catch (IEX_NAMESPACE::BaseExc &e)
     {
@@ -436,7 +436,7 @@ convert(vector <const char*> in,
         cerr << e.what() << endl;
         exit (1);
     }
-    
+
 }
 
 
@@ -602,7 +602,6 @@ combine (vector <const char*> in,
     }
 
     inputs.clear();
-    fordelete.size();
 
     cout << "\n" << "Combine Success" << endl;
 }
