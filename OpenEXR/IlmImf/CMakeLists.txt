@@ -190,5 +190,9 @@ openexr_define_library(IlmImf
     IlmBase::Half
     IlmBase::Imath
     IlmBase::IlmThread
-    ZLIB::ZLIB
+  PRIVATE_DEPS
+    ${ZLIB_LIBRARY}
   )
+
+target_include_directories(IlmImf PRIVATE ${ZLIB_INCLUDE_DIR})
+install(TARGETS ${ZLIB_LIBRARY} EXPORT ${PROJECT_NAME})
