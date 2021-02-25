@@ -33,7 +33,7 @@ endif()
 # Whether to build & install the various command line utility programs
 option(OPENEXR_BUILD_UTILS "Enables building of utility programs" ON)
 
-# This is a variable here for use in controlling where include files are 
+# This is a variable here for use in controlling where include files are
 # installed. Care must be taken when changing this, as many things
 # probably assume this is OpenEXR
 set(OPENEXR_OUTPUT_SUBDIR OpenEXR CACHE STRING "Destination sub-folder of the include path for install")
@@ -133,7 +133,9 @@ if(NOT TARGET Threads::Threads)
   endif()
 endif()
 
-find_package(ZLIB REQUIRED)
-if(NOT TARGET ZLIB::ZLIB)
-  message(FATAL_ERROR "Unable to find zlib library target which is required for OpenEXR")
+if(NOT WIN32)
+  find_package(ZLIB REQUIRED)
+  if(NOT TARGET ZLIB::ZLIB)
+    message(FATAL_ERROR "Unable to find zlib library target which is required for OpenEXR")
+  endif()
 endif()
