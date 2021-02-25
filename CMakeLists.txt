@@ -28,7 +28,7 @@ project(OpenEXRMetaProject)
 # upload the results, cmake has builtin support for
 # submitting to CDash, or any server who speaks the
 # same protocol
-# 
+#
 # These settings will need to be set for your environment,
 # and then a script such as the example in
 #
@@ -39,7 +39,7 @@ project(OpenEXRMetaProject)
 # cmake -S cmake/SampleCTestScript.cmake
 #
 # [or whatever you name the file you edit]
-# 
+#
 #set(CTEST_PROJECT_NAME "OpenEXR")
 #set(CTEST_NIGHTLY_START_TIME "01:01:01 UTC")
 #set(CTEST_DROP_METHOD "http") # there are others...
@@ -57,19 +57,19 @@ endif()
 # Include these two modules without enable/disable options
 add_subdirectory(IlmBase)
 
-# Tell CMake where to find the IlmBaseConfig.cmake file. Makes it posible to call 
+# Tell CMake where to find the IlmBaseConfig.cmake file. Makes it posible to call
 # find_package(IlmBase) in downstream projects
 set(IlmBase_DIR "${CMAKE_CURRENT_BINARY_DIR}/IlmBase/config" CACHE PATH "" FORCE)
-# Add an empty IlmBaseTargets.cmake file for the config to use. 
+# Add an empty IlmBaseTargets.cmake file for the config to use.
 # Can be empty since we already defined the targets in add_subdirectory
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/IlmBase/config/IlmBaseTargets.cmake" "# Dummy file")
 
 add_subdirectory(OpenEXR)
 
-# Tell CMake where to find the OpenEXRConfig.cmake file. Makes it posible to call 
+# Tell CMake where to find the OpenEXRConfig.cmake file. Makes it posible to call
 # find_package(OpenEXR) in downstream projects
 set(OpenEXR_DIR "${CMAKE_CURRENT_BINARY_DIR}/OpenEXR/config" CACHE PATH "" FORCE)
-# Add an empty OpenEXRTargets.cmake file for the config to use. 
+# Add an empty OpenEXRTargets.cmake file for the config to use.
 # Can be empty since we already defined the targets in add_subdirectory
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/OpenEXR/config/OpenEXRTargets.cmake" "# Dummy file")
 
@@ -86,4 +86,4 @@ endif()
 
 # Including this module will add a `clang-format` target to the build if
 # the clang-format executable can be found.
-include(cmake/clang-format.cmake)
+# include(cmake/clang-format.cmake)

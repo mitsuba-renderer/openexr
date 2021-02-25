@@ -95,8 +95,6 @@ if(ILMBASE_INSTALL_PKG_CONFIG)
     )
   endfunction()
   ilmbase_pkg_config_help(../IlmBase.pc.in)
-else()
-  message(NOTICE "-- WARNING pkg-config generation disabled")
 endif()
 
 # The main export of the configuration - This is the
