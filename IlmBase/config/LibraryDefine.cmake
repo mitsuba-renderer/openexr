@@ -75,12 +75,14 @@ function(ILMBASE_DEFINE_LIBRARY libname)
     add_library(${libname} $<TARGET_OBJECTS:${objlib}>)
     target_link_libraries(${libname} PUBLIC ${objlib})
   endif()
-  if(BUILD_SHARED_LIBS)
-    set_target_properties(${libname} PROPERTIES
-      SOVERSION ${ILMBASE_SOVERSION}
-      VERSION ${ILMBASE_LIB_VERSION}
-    )
-  endif()
+
+#   if(BUILD_SHARED_LIBS)
+#     set_target_properties(${libname} PROPERTIES
+#       SOVERSION ${ILMBASE_SOVERSION}
+#       VERSION ${ILMBASE_LIB_VERSION}
+#     )
+#   endif()
+
   set_target_properties(${libname} PROPERTIES
       OUTPUT_NAME "${libname}${ILMBASE_LIB_SUFFIX}"
       RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"

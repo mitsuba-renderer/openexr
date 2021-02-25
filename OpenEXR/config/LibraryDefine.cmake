@@ -69,12 +69,13 @@ function(OPENEXR_DEFINE_LIBRARY libname)
     target_link_libraries(${libname} PUBLIC ${objlib})
   endif()
 
-  if(BUILD_SHARED_LIBS)
-    set_target_properties(${libname} PROPERTIES
-      SOVERSION ${OPENEXR_SOVERSION}
-      VERSION ${OPENEXR_LIB_VERSION}
-    )
-  endif()
+#   if(BUILD_SHARED_LIBS)
+#     set_target_properties(${libname} PROPERTIES
+#       SOVERSION ${OPENEXR_SOVERSION}
+#       VERSION ${OPENEXR_LIB_VERSION}
+#     )
+#   endif()
+
   set_target_properties(${libname} PROPERTIES
       OUTPUT_NAME "${libname}${OPENEXR_LIB_SUFFIX}"
       RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
