@@ -62,6 +62,11 @@ ILMTHREAD_INTERNAL_NAMESPACE_SOURCE_ENTER
 # define ENABLE_SEM_DTOR_WORKAROUND
 #endif
 
+#if defined(__APPLE__) && defined(__aarch64__)
+// wenzel: we need this workaround for the Apple M1 and Enoki's custom thread pool
+#  define ENABLE_SEM_DTOR_WORKAROUND
+#endif
+
 struct TaskGroup::Data
 {
      Data ();
