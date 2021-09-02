@@ -40,10 +40,12 @@ Contrib/DtexToExr/DtexToExr
 *.so
 *.dylib
 *.m4
+*.cmake
 *.log
 *.trs
 *.project
 *.cproject
+*.tcl
 .DS_Store
 build/
 build-win/
