@@ -151,6 +151,7 @@
 #include "half.h"
 #include "halfLimits.h"
 
+#include <cstdint>
 #include <vector>
 #include <string>
 #include <cctype>

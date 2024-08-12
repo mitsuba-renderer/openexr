@@ -52,6 +52,7 @@
 #include <ImfConvert.h>
 #include <ImfPartType.h>
 #include <ImfTileDescription.h>
+#include <cstdint>
 #include "ImfNamespace.h"
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_SOURCE_ENTER
