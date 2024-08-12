@@ -50,6 +50,7 @@
 #include "ImfAutoArray.h"
 #include "ImfFastHuf.h"
 #include "Iex.h"
+#include <cstdint>
 #include <cstring>
 #include <cassert>
 #include <algorithm>
