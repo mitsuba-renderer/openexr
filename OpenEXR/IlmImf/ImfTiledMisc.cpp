@@ -45,6 +45,7 @@
 #include <ImfChannelList.h>
 #include <ImfTileDescription.h>
 #include <algorithm>
+#include <cstdint>
 #include <limits>
 
 #include "ImfNamespace.h"
